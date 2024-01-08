@@ -1,0 +1,18 @@
+---
+layout: default
+title: Home
+---
+
+{% assign latest_posts = collections.post | reverse %}
+
+Lists all of the posts for the site.
+
+<p>Posts: {{ latest_posts.length}}</p>
+{% for post in latest_posts %}
+  <ul>
+    <li>
+      <a href="{{ post.url }}">{{ post.data.title }}</a>
+      <p>{{ post.data.date }}</p>
+    </li>
+  </ul>
+{% endfor %}

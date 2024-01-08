@@ -1,0 +1,26 @@
+{
+  "name": "eleventy-plugin-future-post",
+  "version": "0.0.0",
+  "description": "Hides all posts with a future date (from build date)",
+  "author": "John M. Wargo",
+  "license": "MIT",
+  "main": "eleventy-plugin-future-post.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnwargo/eleventy-plugin-future-post"
+  },
+  "scripts": {
+    "test": "echo \"Launching test\" && node ./test/test.js && echo \"Test complete\"",
+    "start": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "keywords": [
+    "Eleventy"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.10.5"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^2.0.1"
+  }
+}

@@ -1,0 +1,12 @@
+# Folders
+_site/
+images/
+node_modules/
+src/
+test/
+
+# files
+.gitignore
+package-lock.json
+pub.mjs
+eleventy.config.js
