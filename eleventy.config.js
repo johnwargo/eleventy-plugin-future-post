@@ -2,7 +2,7 @@ const futurePost = require('./eleventy-plugin-future-post.js');
 
 module.exports = eleventyConfig => {
 
-  eleventyConfig.addPlugin(futurePost);
+  eleventyConfig.addPlugin(futurePost, { timeOffset: -5 });
 
   eleventyConfig.addPassthroughCopy('src/assets/');
   eleventyConfig.addPassthroughCopy('files/');
