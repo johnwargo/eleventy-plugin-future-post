@@ -18,7 +18,8 @@
     "Eleventy"
   ],
   "dependencies": {
-    "@11ty/eleventy": "^2.0.1"
+    "@11ty/eleventy": "^2.0.1",
+    "cli-logger": "^0.5.40"
   },
   "devDependencies": {
     "@types/node": "^20.10.5",

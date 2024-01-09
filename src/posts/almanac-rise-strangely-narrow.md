@@ -1,6 +1,6 @@
 ---
 title: Almanac Rise Strangely Narrow
-date: 2022-05-13
+date: 2024-01-10
 tags: post
 ---
 
