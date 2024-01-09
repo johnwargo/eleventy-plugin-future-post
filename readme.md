@@ -2,6 +2,11 @@
 
 An Eleventy Plugin that 
 
+
+
+Filters all pages, home page and the like. 
+As long as the page doesn't have a Date frontmatter property, the plugin will ignore.
+
 *** 
 
 If this code helps you, please consider buying me a coffee.

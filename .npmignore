@@ -1,12 +1,14 @@
 # Folders
 _site/
-images/
 node_modules/
 src/
+images/
+ts-src/
 test/
 
 # files
 .gitignore
+eleventy.config.js
 package-lock.json
 pub.mjs
-eleventy.config.js
+tsconfig.json
