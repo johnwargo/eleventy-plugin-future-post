@@ -19,15 +19,12 @@ module.exports = function (eleventyConfig, options = {}) {
         log.info(`Folders: ${folders.join(', ')}`);
     const timeOffset = (options.timeOffset || 0) * 3600000;
     log.debug(`Time Offset: ${timeOffset}`);
-    var tmpDate = new Date();
-    var currentDate = new Date(tmpDate + 'z');
-    log.debug(`Current Date: ${currentDate}`);
-    currentDate.setHours(0, 0, 0, 0);
+    var tmpDate = new Date().toUTCString();
+    const currentDate = new Date(tmpDate);
     log.debug(`Current Date: ${currentDate}`);
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data) => {
-            var pageDate = new Date(Date.UTC(data.page.date));
-            pageDate.setHours(0, 0, 0, 0);
+            var pageDate = new Date(data.page.date);
             log.debug(`${data.title}: Page Date: ${pageDate}`);
             return (pageDate > currentDate) ? true : data.eleventyExcludeFromCollections;
         };

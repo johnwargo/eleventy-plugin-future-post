@@ -4,8 +4,8 @@ module.exports = eleventyConfig => {
 
   // eleventyConfig.addPlugin(futurePost);
   // eleventyConfig.addPlugin(futurePost, { timeOffset: -5 });
-  eleventyConfig.addPlugin(futurePost, { debugMode: true });
-  // eleventyConfig.addPlugin(futurePost, { debugMode: true, timeOffset: -5 });
+  // eleventyConfig.addPlugin(futurePost, { debugMode: true });
+  eleventyConfig.addPlugin(futurePost, { debugMode: true, timeOffset: -5 });
 
   eleventyConfig.addPassthroughCopy('src/assets/');
   eleventyConfig.addPassthroughCopy('files/');

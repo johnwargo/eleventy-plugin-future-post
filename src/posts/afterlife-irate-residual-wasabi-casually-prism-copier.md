@@ -1,6 +1,6 @@
 ---
 title: Afterlife Irate Residual Wasabi Casually Prism Copier
-date: 2024-01-10
+date: 2024-01-11
 tags: post
 ---
 
