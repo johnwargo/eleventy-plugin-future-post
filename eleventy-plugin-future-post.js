@@ -21,13 +21,14 @@ module.exports = function (eleventyConfig, options = {}) {
     log.debug(`Time Offset: ${timeOffset}`);
     var tmpDate = new Date();
     var currentDate = new Date(tmpDate + 'z');
-    log.debug(`Current (compare) Date: ${currentDate}`);
+    log.debug(`Current Date: ${currentDate}`);
+    currentDate.setHours(0, 0, 0, 0);
+    log.debug(`Current Date: ${currentDate}`);
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data) => {
-            var pageDate = new Date(data.page.date);
-            var adjustedDate = new Date(pageDate.getTime() - timeOffset);
-            log.debug(data.title);
-            log.debug(`Page Date: ${pageDate}, Adjusted Date: ${adjustedDate}`);
+            var pageDate = new Date(Date.UTC(data.page.date));
+            pageDate.setHours(0, 0, 0, 0);
+            log.debug(`${data.title}: Page Date: ${pageDate}`);
             return (pageDate > currentDate) ? true : data.eleventyExcludeFromCollections;
         };
     });

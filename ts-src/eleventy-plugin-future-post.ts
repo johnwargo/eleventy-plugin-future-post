@@ -18,7 +18,7 @@ const APP_NAME = 'Eleventy-Plugin-Future-Post';
 
 module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
 
-    // configure the logger
+    // configure logger output (sets [plugin] name as prefix)
     var conf: any = { console: true, level: logger.INFO };
     conf.prefix = function (record: any) {
         return `[${APP_NAME}]`;
@@ -40,13 +40,17 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     // convert it to UTC because Eleventy Post dates are in UTC
     var currentDate: Date = new Date(tmpDate + 'z');
     log.debug(`Current Date: ${currentDate}`);
+    currentDate.setHours(0,0,0,0);
+    log.debug(`Current Date: ${currentDate}`);
 
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data: any) => {
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC
             var pageDate = new Date(data.page.date);
-            var adjustedDate = new Date(pageDate.getTime() - timeOffset);
-            log.debug(data.title);
-            log.debug(`Page Date: ${pageDate}, Adjusted Date: ${adjustedDate}`);
+            pageDate.setHours(0,0,0,0);
+            // var adjustedDate = new Date(pageDate.getTime() - timeOffset);
+            log.debug(`${data.title}: Page Date: ${pageDate}`);
+            // log.debug(`Adjusted Date: ${adjustedDate}`);
             return (pageDate > currentDate) ? true : data.eleventyExcludeFromCollections;
         }
     });
