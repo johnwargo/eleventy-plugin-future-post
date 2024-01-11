@@ -6,8 +6,6 @@
  ***********************************************/
 // https://stackoverflow.com/questions/7403486/add-or-subtract-timezone-difference-to-javascript-date
 
-// TODO: Add support folder list specifying which folders to process
-
 //@ts-ignore
 import logger from 'cli-logger';
 
