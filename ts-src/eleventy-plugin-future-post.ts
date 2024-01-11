@@ -51,5 +51,6 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     eleventyConfig.on("eleventy.before", ({ runMode }: { runMode: string }) => {
         // initialize the isServing flag once before the build starts
         isServing = runMode === "serve" || runMode === "watch";
+        if (isServing) log.debug('Serving site, not excluding any posts');
     });
 }
