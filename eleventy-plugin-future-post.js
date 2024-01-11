@@ -17,15 +17,14 @@ module.exports = function (eleventyConfig, options = {}) {
     const folders = options.folders || [];
     if (folders.length > 0)
         log.info(`Folders: ${folders.join(', ')}`);
-    const timeOffset = (options.timeOffset || 0) * 3600000;
-    log.debug(`Time Offset: ${timeOffset}`);
-    var tmpDate = new Date().toUTCString();
-    const currentDate = new Date(tmpDate);
-    log.debug(`Current Date: ${currentDate}`);
+    const currentDate = new Date();
+    const timeOffsetInMS = currentDate.getTimezoneOffset() * 60000;
+    log.debug(`Current Date: ${currentDate}, Offset: ${timeOffsetInMS}`);
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data) => {
             var pageDate = new Date(data.page.date);
-            log.debug(`${data.title}: Page Date: ${pageDate}`);
+            pageDate.setTime(pageDate.getTime() + timeOffsetInMS);
+            log.debug(`${data.title}: Date: ${pageDate}`);
             return (pageDate > currentDate) ? true : data.eleventyExcludeFromCollections;
         };
     });

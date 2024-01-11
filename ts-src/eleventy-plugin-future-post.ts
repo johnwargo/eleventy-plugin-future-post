@@ -4,13 +4,14 @@
  * By John M. Wargo
  * https://johnwargo.com
  ***********************************************/
+// https://stackoverflow.com/questions/7403486/add-or-subtract-timezone-difference-to-javascript-date
 
 //@ts-ignore
 import logger from 'cli-logger';
 
 type ModuleOptions = {
     debugMode?: boolean,
-    timeOffset?: number,
+    // timeOffset?: number,
     folders?: string[]
 }
 
@@ -33,35 +34,16 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     const folders = options.folders || [];
     if (folders.length > 0) log.info(`Folders: ${folders.join(', ')}`);
 
-    const timeOffset = (options.timeOffset || 0) * 3600000;
-    log.debug(`Time Offset: ${timeOffset}`);
-
-    // get the current date/time
-
-    // var tmpDate = new Date();
-    // convert it to UTC because Eleventy Post dates are in UTC
-    // var currentDate: Date = new Date(tmpDate + 'z');
-
-    var tmpDate = new Date().toUTCString();
-    const currentDate = new Date(tmpDate);
-    log.debug(`Current Date: ${currentDate}`);
-
-    // var currentDate: Date = new Date();
-    // log.debug(`Current Date: ${currentDate}`);
-    // currentDate.setHours(0,0,0,0);
-    // log.debug(`Current Date: ${currentDate}`);
-
-    
+    // get the current date/time (once at the beginning of the build)
+    const currentDate: Date = new Date();
+    const timeOffsetInMS: number = currentDate.getTimezoneOffset() * 60000;
+    log.debug(`Current Date: ${currentDate}, Offset: ${timeOffsetInMS}`);
 
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data: any) => {
-            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC
             var pageDate = new Date(data.page.date);
-            log.debug(`${data.title}: Page Date: ${pageDate}`);
-
-            // var adjustedDate = new Date(pageDate.getTime() - timeOffset);
-            // log.debug(`${data.title}: Adjusted Date: ${adjustedDate}`);
-
+            pageDate.setTime(pageDate.getTime() + timeOffsetInMS);
+            log.debug(`${data.title}: Date: ${pageDate}`);
             return (pageDate > currentDate) ? true : data.eleventyExcludeFromCollections;
         }
     });
