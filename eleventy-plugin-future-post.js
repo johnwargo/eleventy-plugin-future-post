@@ -14,9 +14,6 @@ module.exports = function (eleventyConfig, options = {}) {
     const debugMode = options.debugMode || false;
     log.level(debugMode ? log.DEBUG : log.INFO);
     log.debug('Debug mode enabled');
-    const folders = options.folders || [];
-    if (folders.length > 0)
-        log.info(`Folders: ${folders.join(', ')}`);
     const currentDate = new Date();
     const timeOffsetInMS = currentDate.getTimezoneOffset() * 60000;
     log.debug(`Current Date: ${currentDate}, Offset: ${timeOffsetInMS}`);

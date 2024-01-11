@@ -6,13 +6,15 @@
  ***********************************************/
 // https://stackoverflow.com/questions/7403486/add-or-subtract-timezone-difference-to-javascript-date
 
+// TODO: Add support folder list specifying which folders to process
+
 //@ts-ignore
 import logger from 'cli-logger';
 
 type ModuleOptions = {
     debugMode?: boolean,
     // timeOffset?: number,
-    folders?: string[]
+    // folders?: string[]
 }
 
 const APP_NAME = 'Eleventy-Plugin-Future-Post';
@@ -31,8 +33,8 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     log.level(debugMode ? log.DEBUG : log.INFO);
     log.debug('Debug mode enabled');
 
-    const folders = options.folders || [];
-    if (folders.length > 0) log.info(`Folders: ${folders.join(', ')}`);
+    // const folders = options.folders || [];
+    // if (folders.length > 0) log.info(`Folders: ${folders.join(', ')}`);
 
     // get the current date/time (once at the beginning of the build)
     const currentDate: Date = new Date();
