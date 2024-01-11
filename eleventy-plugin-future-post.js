@@ -30,5 +30,7 @@ module.exports = function (eleventyConfig, options = {}) {
     });
     eleventyConfig.on("eleventy.before", ({ runMode }) => {
         isServing = runMode === "serve" || runMode === "watch";
+        if (isServing)
+            log.debug('Serving site, not excluding any posts');
     });
 };

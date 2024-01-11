@@ -2,8 +2,8 @@ const futurePost = require('./eleventy-plugin-future-post.js');
 
 module.exports = eleventyConfig => {
 
-  eleventyConfig.addPlugin(futurePost); 
-  // eleventyConfig.addPlugin(futurePost, { debugMode: true });
+  // eleventyConfig.addPlugin(futurePost); 
+  eleventyConfig.addPlugin(futurePost, { debugMode: true });
 
   eleventyConfig.addPassthroughCopy('src/assets/');
   eleventyConfig.addPassthroughCopy('files/');
