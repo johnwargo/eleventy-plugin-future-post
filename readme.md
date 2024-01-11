@@ -20,13 +20,13 @@ To install the plugin, open a terminal window or command prompt to an Eleventy p
 npm install eleventy-plugin-future-post
 ```
 
-## Usage
-
+At the top of the project's `eleventy.config.js` file, add the following line:
 
 ```js
 const futurePost = require('eleventy-plugin-future-post');
 ```
 
+Inside the `module.exports` section of the file, load the plugin as shown in the following example:
 
 ```js
 module.exports = eleventyConfig => {
@@ -39,6 +39,7 @@ module.exports = eleventyConfig => {
   
 };
 ```
+
 
 
 
