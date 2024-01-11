@@ -40,10 +40,26 @@ module.exports = eleventyConfig => {
 };
 ```
 
+You can also configure the plugin to send a bunch of extra data to the console as it executes by enabling `debugMode`:
 
+```js
+eleventyConfig.addPlugin(futurePost, { debugMode: true });
+```
 
+With that in place, console output looks something like the following:
 
+```shell
+[Eleventy-Plugin-Future-Post] Debug mode enabled
+[Eleventy-Plugin-Future-Post] Current Date: Wed Jan 10 2024 20:38:07 GMT-0500 (Eastern Standard Time), Offset: 18000000
+[Eleventy-Plugin-Future-Post] Blunderer Molasses Deviant: Date: Thu Jan 11 2024 00:00:00 GMT-0500 (Eastern Standard Time)
+[Eleventy-Plugin-Future-Post] Clause Ecosystem Deluxe: Date: Wed Jan 31 2024 00:00:00 GMT-0500 (Eastern Standard Time)
+[Eleventy-Plugin-Future-Post] Coeditor Recess Senior Bonanza: Date: Wed Jan 10 2024 00:00:00 GMT-0500 (Eastern Standard Time)
+[Eleventy-Plugin-Future-Post] Modified Crayfish Ending: Date: Sun Dec 03 2023 00:00:00 GMT-0500 (Eastern Standard Time)
+[Eleventy-Plugin-Future-Post] Placate Reacquire: Date: Tue Nov 14 2023 00:00:00 GMT-0500 (Eastern Standard Time)
+[Eleventy-Plugin-Future-Post] Home: Date: Mon Jan 08 2024 03:12:08 GMT-0500 (Eastern Standard Time)
+```
 
+For some reason, and I haven't spent any time looking into this, each post entry logs to the console twice. Perhaps I'll fix that some day.
 
 *** 
 
