@@ -31,7 +31,7 @@ Inside the `module.exports` section of the file, load the plugin as shown in the
 ```js
 module.exports = eleventyConfig => {
 
-  // other stuff
+  // stuff
 
   eleventyConfig.addPlugin(futurePost);  
 
