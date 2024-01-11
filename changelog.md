@@ -1,9 +1,5 @@
 # Changelog
 
-## 20231227 (v0.0.5)
+## 20240110 (v0.0.1)
 
-Fixed an error in the readme and cleaned up some stuff.
-
-## 20231227 (v0.0.4)
-
-Added support for file size, create date, modified date.
+First published version.
