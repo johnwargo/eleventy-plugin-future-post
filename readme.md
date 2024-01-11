@@ -8,12 +8,9 @@ For my use case, I wanted something different, I didn't want to manage the **sta
 
 To accomplish this, I created this plugin; you can read more about it in [Hiding Future Posts in Eleventy](https://johnwargo.com/posts/2024/hiding-future-posts-eleventy).
 
+## Processing Scope
 
-
-
-
-Filters all pages, home page and the like. 
-As long as the page doesn't have a Date frontmatter property, the plugin will ignore.
+The plugin processes all the files in an Eleventy site (Home, About, etc.); I could have added code to ignore them, but as long as those pages don't have a `date` front matter property since none of those pages should have a future save date, the plugin will automatically publish them (they won't be ignored during the Eleventy site build process).
 
 
 ## Installation
