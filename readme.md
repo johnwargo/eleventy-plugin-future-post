@@ -12,13 +12,13 @@ To accomplish this, I created this plugin; you can read more about it in [Hiding
 
 The plugin processes all the files in an Eleventy site (Home, About, etc.); I could have added code to ignore them, but as long as those pages don't have a `date` front matter property since none of those pages should have a future save date, the plugin will automatically publish them (they won't be ignored during the Eleventy site build process).
 
-
 ## Installation
+
+To install the plugin, open a terminal window or command prompt to an Eleventy project and execute the following command:
 
 ```shell
 npm install eleventy-plugin-future-post
 ```
-
 
 ## Usage
 
