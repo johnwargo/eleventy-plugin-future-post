@@ -37,19 +37,23 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     log.debug(`Current Date: ${currentDate}, Offset: ${timeOffsetInMS}`);
 
     eleventyConfig.addGlobalData("eleventyComputed.permalink", () => {
-		// When using `addGlobalData` and you *want* to return a function, you must nest functions like this.
-		// `addGlobalData` acts like a global data file and runs the top level function it receives.
-		return (data: any) => {
+        // When using `addGlobalData` and you *want* to return a function, you must nest functions like this.
+        // `addGlobalData` acts like a global data file and runs the top level function it receives.
+        return (data: any) => {
             log.debug(`Permalink: ${data.title}`);
-			if (isServing) return data.permalink;
-			// Always skip during non-watch/serve builds
-			return data.draft ? false : data.permalink;
-		}
-	});
+            if (isServing) return data.permalink;
+            // Always skip during non-watch/serve builds
+            return data.draft ? false : data.permalink;
+        }
+    });
 
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data: any) => {
-            log.debug(`Exclude: ${data.title}`);
+            if (data.page.outputPath) {
+                log.debug(`Exclude: ${data.title} (${data.page.outputPath})`);
+            } else {
+                log.debug(`Exclude: ${data.title}`);
+            }
             // If we're serving the site, don't exclude anything
             if (isServing) return data.eleventyExcludeFromCollections;
             // when not serving, check the date

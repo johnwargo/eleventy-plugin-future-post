@@ -23,17 +23,22 @@ module.exports = function (eleventyConfig, options = {}) {
             log.debug(`Permalink: ${data.title}`);
             if (isServing)
                 return data.permalink;
-            log.debug(`Permalink: ${data.title}`);
             return data.draft ? false : data.permalink;
         };
     });
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data) => {
-            log.debug(`Exclude: ${data.title}`);
+            if (data.page.outputPath) {
+                log.debug(`Exclude: ${data.title} (${data.page.outputPath})`);
+            }
+            else {
+                log.debug(`Exclude: ${data.title}`);
+            }
             if (isServing)
                 return data.eleventyExcludeFromCollections;
             var pageDate = new Date(data.page.date);
             pageDate.setTime(pageDate.getTime() + timeOffsetInMS);
+            log.debug(`Comparing page date: ${pageDate}`);
             return (pageDate > currentDate) ? true : data.eleventyExcludeFromCollections;
         };
     });
