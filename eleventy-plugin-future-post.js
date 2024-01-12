@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cli_logger_1 = __importDefault(require("cli-logger"));
 const APP_NAME = 'Eleventy-Plugin-Future-Post';
 module.exports = function (eleventyConfig, options = {}) {
+    var isServing = false;
     var conf = { console: true, level: cli_logger_1.default.INFO };
     conf.prefix = function (record) {
         return `[${APP_NAME}]`;
@@ -17,12 +18,33 @@ module.exports = function (eleventyConfig, options = {}) {
     const currentDate = new Date();
     const timeOffsetInMS = currentDate.getTimezoneOffset() * 60000;
     log.debug(`Current Date: ${currentDate}, Offset: ${timeOffsetInMS}`);
+    eleventyConfig.addGlobalData("eleventyComputed.permalink", () => {
+        return (data) => {
+            log.debug(`Permalink: ${data.title}`);
+            if (isServing)
+                return data.permalink;
+            return data.draft ? false : data.permalink;
+        };
+    });
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data) => {
+            if (data.page.outputPath) {
+                log.debug(`Exclude: ${data.title} (${data.page.outputPath})`);
+            }
+            else {
+                log.debug(`Exclude: ${data.title}`);
+            }
+            if (isServing)
+                return data.eleventyExcludeFromCollections;
             var pageDate = new Date(data.page.date);
             pageDate.setTime(pageDate.getTime() + timeOffsetInMS);
-            log.debug(`${data.title}: Date: ${pageDate}`);
+            log.debug(`Comparing page date: ${pageDate}`);
             return (pageDate > currentDate) ? true : data.eleventyExcludeFromCollections;
         };
+    });
+    eleventyConfig.on("eleventy.before", ({ runMode }) => {
+        isServing = runMode === "serve" || runMode === "watch";
+        if (isServing)
+            log.debug('Serving site, not excluding any posts');
     });
 };

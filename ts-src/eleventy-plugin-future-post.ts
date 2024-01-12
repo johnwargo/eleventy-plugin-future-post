@@ -10,14 +10,14 @@
 import logger from 'cli-logger';
 
 type ModuleOptions = {
-    debugMode?: boolean,
-    // timeOffset?: number,
-    // folders?: string[]
+    debugMode?: boolean
 }
 
 const APP_NAME = 'Eleventy-Plugin-Future-Post';
 
 module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
+
+    var isServing: boolean = false;
 
     // configure logger output (sets [plugin] name as prefix)
     var conf: any = { console: true, level: logger.INFO };
@@ -31,20 +31,42 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     log.level(debugMode ? log.DEBUG : log.INFO);
     log.debug('Debug mode enabled');
 
-    // const folders = options.folders || [];
-    // if (folders.length > 0) log.info(`Folders: ${folders.join(', ')}`);
-
     // get the current date/time (once at the beginning of the build)
     const currentDate: Date = new Date();
     const timeOffsetInMS: number = currentDate.getTimezoneOffset() * 60000;
     log.debug(`Current Date: ${currentDate}, Offset: ${timeOffsetInMS}`);
 
+    eleventyConfig.addGlobalData("eleventyComputed.permalink", () => {
+        // When using `addGlobalData` and you *want* to return a function, you must nest functions like this.
+        // `addGlobalData` acts like a global data file and runs the top level function it receives.
+        return (data: any) => {
+            log.debug(`Permalink: ${data.title}`);
+            if (isServing) return data.permalink;
+            // Always skip during non-watch/serve builds
+            return data.draft ? false : data.permalink;
+        }
+    });
+
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data: any) => {
+            if (data.page.outputPath) {
+                log.debug(`Exclude: ${data.title} (${data.page.outputPath})`);
+            } else {
+                log.debug(`Exclude: ${data.title}`);
+            }
+            // If we're serving the site, don't exclude anything
+            if (isServing) return data.eleventyExcludeFromCollections;
+            // when not serving, check the date
             var pageDate = new Date(data.page.date);
             pageDate.setTime(pageDate.getTime() + timeOffsetInMS);
-            log.debug(`${data.title}: Date: ${pageDate}`);
+            log.debug(`Comparing page date: ${pageDate}`);
             return (pageDate > currentDate) ? true : data.eleventyExcludeFromCollections;
         }
+    });
+
+    eleventyConfig.on("eleventy.before", ({ runMode }: { runMode: string }) => {
+        // initialize the `isServing` flag once before the build starts
+        isServing = runMode === "serve" || runMode === "watch";
+        if (isServing) log.debug('Serving site, not excluding any posts');
     });
 }
