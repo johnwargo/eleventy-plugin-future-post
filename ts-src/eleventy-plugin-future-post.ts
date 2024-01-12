@@ -36,14 +36,26 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     const timeOffsetInMS: number = currentDate.getTimezoneOffset() * 60000;
     log.debug(`Current Date: ${currentDate}, Offset: ${timeOffsetInMS}`);
 
+    eleventyConfig.addGlobalData("eleventyComputed.permalink", () => {
+		// When using `addGlobalData` and you *want* to return a function, you must nest functions like this.
+		// `addGlobalData` acts like a global data file and runs the top level function it receives.
+		return (data: any) => {
+            log.debug(`Permalink: ${data.title}`);
+			if (isServing) return data.permalink;
+			// Always skip during non-watch/serve builds
+			return data.draft ? false : data.permalink;
+		}
+	});
+
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data: any) => {
+            log.debug(`Exclude: ${data.title}`);
             // If we're serving the site, don't exclude anything
             if (isServing) return data.eleventyExcludeFromCollections;
             // when not serving, check the date
             var pageDate = new Date(data.page.date);
             pageDate.setTime(pageDate.getTime() + timeOffsetInMS);
-            log.debug(`${data.title}: Date: ${pageDate}`);
+            log.debug(`Comparing page date: ${pageDate}`);
             return (pageDate > currentDate) ? true : data.eleventyExcludeFromCollections;
         }
     });

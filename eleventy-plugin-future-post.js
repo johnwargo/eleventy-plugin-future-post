@@ -18,13 +18,22 @@ module.exports = function (eleventyConfig, options = {}) {
     const currentDate = new Date();
     const timeOffsetInMS = currentDate.getTimezoneOffset() * 60000;
     log.debug(`Current Date: ${currentDate}, Offset: ${timeOffsetInMS}`);
+    eleventyConfig.addGlobalData("eleventyComputed.permalink", () => {
+        return (data) => {
+            log.debug(`Permalink: ${data.title}`);
+            if (isServing)
+                return data.permalink;
+            log.debug(`Permalink: ${data.title}`);
+            return data.draft ? false : data.permalink;
+        };
+    });
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data) => {
+            log.debug(`Exclude: ${data.title}`);
             if (isServing)
                 return data.eleventyExcludeFromCollections;
             var pageDate = new Date(data.page.date);
             pageDate.setTime(pageDate.getTime() + timeOffsetInMS);
-            log.debug(`${data.title}: Date: ${pageDate}`);
             return (pageDate > currentDate) ? true : data.eleventyExcludeFromCollections;
         };
     });
