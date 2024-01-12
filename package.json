@@ -1,6 +1,6 @@
 {
   "name": "eleventy-plugin-future-post",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Hides all posts with a future date (from build date)",
   "author": "John M. Wargo",
   "license": "MIT",
