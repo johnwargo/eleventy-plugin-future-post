@@ -20,7 +20,10 @@ module.exports = function (eleventyConfig, options = {}) {
     log.debug(`Current Date: ${currentDate}, Offset: ${timeOffsetInMS}`);
     eleventyConfig.addGlobalData("eleventyComputed.permalink", () => {
         return (data) => {
-            log.debug(`Permalink: ${data.title}`);
+            var msg = `Permalink`;
+            if (data.title)
+                msg += `: ${data.title}`;
+            log.debug(msg);
             if (isServing)
                 return data.permalink;
             return data.draft ? false : data.permalink;
@@ -28,12 +31,10 @@ module.exports = function (eleventyConfig, options = {}) {
     });
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data) => {
-            if (data.page.outputPath) {
-                log.debug(`Exclude: ${data.title} (${data.page.outputPath})`);
-            }
-            else {
-                log.debug(`Exclude: ${data.title}`);
-            }
+            var msg = `Exclude: ${data.title}`;
+            if (data.page.outputPath)
+                msg += ` (${data.page.outputPath})`;
+            log.debug(msg);
             if (isServing)
                 return data.eleventyExcludeFromCollections;
             var pageDate = new Date(data.page.date);
@@ -45,6 +46,6 @@ module.exports = function (eleventyConfig, options = {}) {
     eleventyConfig.on("eleventy.before", ({ runMode }) => {
         isServing = runMode === "serve" || runMode === "watch";
         if (isServing)
-            log.debug('Serving site, not excluding any posts');
+            log.debug('Serving full site (not excluding any posts)');
     });
 };

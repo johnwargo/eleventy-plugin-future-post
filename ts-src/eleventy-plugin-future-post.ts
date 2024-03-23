@@ -40,7 +40,9 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
         // When using `addGlobalData` and you *want* to return a function, you must nest functions like this.
         // `addGlobalData` acts like a global data file and runs the top level function it receives.
         return (data: any) => {
-            log.debug(`Permalink: ${data.title}`);
+            var msg = `Permalink`;
+            if (data.title) msg += `: ${data.title}`;
+            log.debug(msg);
             if (isServing) return data.permalink;
             // Always skip during non-watch/serve builds
             return data.draft ? false : data.permalink;
@@ -49,11 +51,9 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
 
     eleventyConfig.addGlobalData("eleventyComputed.eleventyExcludeFromCollections", () => {
         return (data: any) => {
-            if (data.page.outputPath) {
-                log.debug(`Exclude: ${data.title} (${data.page.outputPath})`);
-            } else {
-                log.debug(`Exclude: ${data.title}`);
-            }
+            var msg = `Exclude: ${data.title}`;
+            if (data.page.outputPath) msg += ` (${data.page.outputPath})`;
+            log.debug(msg);
             // If we're serving the site, don't exclude anything
             if (isServing) return data.eleventyExcludeFromCollections;
             // when not serving, check the date
@@ -67,6 +67,6 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     eleventyConfig.on("eleventy.before", ({ runMode }: { runMode: string }) => {
         // initialize the `isServing` flag once before the build starts
         isServing = runMode === "serve" || runMode === "watch";
-        if (isServing) log.debug('Serving site, not excluding any posts');
+        if (isServing) log.debug('Serving full site (not excluding any posts)');
     });
 }
